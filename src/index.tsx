@@ -13,12 +13,6 @@ padding: 20px;
 `;
 body.prepend(root);
 
-const head = document.querySelector("head")!;
-const styleLink = document.createElement("link");
-styleLink.setAttribute("href", chrome.runtime.getURL("index.css"));
-styleLink.setAttribute("rel", "stylesheet");
-head.appendChild(styleLink);
-
 render(
   <StrictMode>
     <App />

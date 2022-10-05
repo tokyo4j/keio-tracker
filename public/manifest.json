@@ -6,13 +6,8 @@
   "content_scripts": [
     {
       "matches": ["https://lms.keio.jp/"],
-      "js": ["index.js"]
-    }
-  ],
-  "web_accessible_resources": [
-    {
-      "resources": ["index.css"],
-      "matches": ["https://lms.keio.jp/*"]
+      "js": ["index.js"],
+      "css": ["index.css"]
     }
   ],
   "icons": {
