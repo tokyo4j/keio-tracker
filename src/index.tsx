@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { render } from "react-dom";
 import App from "./App";
 
-import "./react-datepicker.css";
+import "react-datepicker/dist/react-datepicker.css";
 import "./style.sass";
 
 const body = document.querySelector("body")!;

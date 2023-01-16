@@ -9,9 +9,6 @@
     "esModuleInterop": true,
     "downlevelIteration": true,
     "baseUrl": "src/types",
-    "paths": {
-      "react-table": ["react-table-config.d.ts"]
-    }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
 }
