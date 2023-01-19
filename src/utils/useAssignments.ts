@@ -3,10 +3,8 @@ import { Assignment } from "../types/assignment";
 import fetchAssignments from "./fetchAssignments";
 
 const useAssignments = () => {
-  const [assignments, setAssignments] = useState(
-    undefined as undefined | Assignment[]
-  );
-  const [error, setError] = useState(undefined as undefined | string);
+  const [assignments, setAssignments] = useState<Assignment[]>();
+  const [error, setError] = useState<string>();
   useEffect(() => {
     fetchAssignments()
       .then(setAssignments)

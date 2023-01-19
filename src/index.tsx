@@ -8,8 +8,8 @@ import "./style.sass";
 const body = document.querySelector("body")!;
 const root = document.createElement("div");
 root.style.cssText = `
-margin-left: 60px;
-padding: 20px;
+margin-left: 84px;
+padding: 24px;
 `;
 body.prepend(root);
 

@@ -17,7 +17,7 @@ const DateBetweenFilter: Renderer<FilterProps<Assignment>> = ({
         }}
         isClearable={true}
         customInput={
-          <div className="datepicker from">
+          <div className="kt-datepicker kt-from">
             <span>
               {filterValue[0] ? formatDate(filterValue[0]) : "日付選択"}
             </span>
@@ -32,7 +32,7 @@ const DateBetweenFilter: Renderer<FilterProps<Assignment>> = ({
         }}
         isClearable={true}
         customInput={
-          <div className="datepicker to">
+          <div className="kt-datepicker kt-to">
             <span>
               ~ {filterValue[1] ? formatDate(filterValue[1]) : "日付選択"}
             </span>

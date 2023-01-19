@@ -1,4 +1,4 @@
-.assignmentsTable
+.assignments-table
   width: 100%
   max-width: 1200px
   table-layout: fixed
@@ -19,18 +19,22 @@
       width: 30px
   thead
     user-select: none
+    // headers
     tr:first-child
       height: 1rem
       th
         position: relative
+        // lock status
         &:nth-child(4)
           text-align: left
           span
             margin-left: 2px
+        // submission status
         &:nth-child(5)
           text-align: left
           span
             margin-left: 6px
+        // arrow
         svg
           position: absolute
           right: 3px
@@ -39,33 +43,37 @@
             transform: translateY(-50%) rotate(180deg)
           &.desc
             transform: translateY(-50%)
+    // filters
     tr:last-child
       th
         height: 35px
-        .textColumnFilterInput,
-        .selectColumnFilterSelect
+        .kt-text-filter, // text-filter for assignment
+        .kt-selection-filter // select-filters for subject, lock status, submission status
           display: block
           width: 100%
           border-width: 0
           height: 100%
           margin-bottom: 0
           padding: 0
-        .datepicker
+        .kt-datepicker
           text-align: left
-          &.to span
+          &.kt-to span
             margin-left: 10px
   tbody
     tr
       cursor: pointer
-      &.noData
+      // message when no data is found
+      &.kt-no-data
         cursor: auto
         text-align: center
-      &.highlighted td
+      // highlight for assignments with close deadline
+      &.kt-highlighted td
         color: red
       td
         text-overflow: ellipsis
         overflow: hidden
         white-space: nowrap
+        // hide-button
         &:nth-child(6)
           text-align: center
           user-select: none

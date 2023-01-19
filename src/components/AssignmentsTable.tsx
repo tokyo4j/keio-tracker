@@ -1,8 +1,8 @@
-import { Assignment } from "../types/assignment";
+import type { Assignment } from "../types/assignment";
 import { formatDateTime } from "../utils";
 import DateBetweenFilter from "./filters/DateBetweenFilter";
-import TextColumnFilter from "./filters/TextColumnFilter";
-import generateSelectColumnFilter from "./filters/generateSelectColumnFilter";
+import TextFilter from "./filters/TextFilter";
+import getSelectionFilter from "./filters/getSelectionFilter";
 import { Fragment, useState, useEffect, useCallback } from "react";
 import { Column, useTable, useFilters, useSortBy } from "react-table";
 import Arrow from "./Arrow";
@@ -11,13 +11,13 @@ const columns: Column<Assignment>[] = [
   {
     Header: "科目",
     accessor: "courseName",
-    Filter: generateSelectColumnFilter(),
+    Filter: getSelectionFilter(),
     Cell: ({ value }) => <span title={value}>{value}</span>,
   },
   {
     Header: "課題",
     accessor: "name",
-    Filter: TextColumnFilter,
+    Filter: TextFilter,
     filter: "includes",
     Cell: ({ value }) => <span title={value}>{value}</span>,
   },
@@ -47,7 +47,7 @@ const columns: Column<Assignment>[] = [
     id: "isLocked",
     accessor: "isLocked",
     Cell: ({ value }) => (value ? "ロック" : "アンロック"),
-    Filter: generateSelectColumnFilter([
+    Filter: getSelectionFilter([
       { value: true, text: "ロック" },
       { value: false, text: "アンロック" },
     ]),
@@ -58,7 +58,7 @@ const columns: Column<Assignment>[] = [
     id: "isSubmitted",
     accessor: "isSubmitted",
     Cell: ({ value }) => (value ? "提出済" : "未提出"),
-    Filter: generateSelectColumnFilter([
+    Filter: getSelectionFilter([
       { value: true, text: "提出済" },
       { value: false, text: "未提出" },
     ]),
@@ -115,9 +115,7 @@ const AssignmentsTable = ({ assignments }: Props) => {
       useSortBy
     );
 
-  const [hiddenAssignmentIds, setHiddenAssignmentIds] = useState(
-    [] as number[]
-  );
+  const [hiddenAssignmentIds, setHiddenAssignmentIds] = useState<number[]>([]);
 
   useEffect(() => {
     const savedData = localStorage.getItem("hiddenAssignmentIds");
@@ -142,7 +140,7 @@ const AssignmentsTable = ({ assignments }: Props) => {
   }, []);
 
   return (
-    <table {...getTableProps()} className="assignmentsTable">
+    <table {...getTableProps()} className="assignments-table">
       <thead>
         {headerGroups.map((headerGroup, i) => (
           <Fragment key={i}>
@@ -181,8 +179,9 @@ const AssignmentsTable = ({ assignments }: Props) => {
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
+        {/* TODO: showing message below doesn't consider hidden assignments */}
         {rows.length == 0 && (
-          <tr className="noData">
+          <tr className="kt-no-data">
             <td colSpan={headerGroups[0].headers.length}>
               該当する課題はありません
             </td>
@@ -203,7 +202,7 @@ const AssignmentsTable = ({ assignments }: Props) => {
               <tr
                 {...row.getRowProps()}
                 key={i}
-                className={isHighlighted ? "highlighted" : undefined}
+                className={isHighlighted ? "kt-highlighted" : undefined}
               >
                 {row.cells.map((cell, j) => (
                   <td

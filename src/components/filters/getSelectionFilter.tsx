@@ -2,8 +2,8 @@ import { Assignment } from "assignment";
 import { useMemo } from "react";
 import { FilterProps, Renderer } from "react-table";
 
-// A function that returns filter. Set customOptions to manually set filtered values and corresponding texts.
-const generateSelectColumnFilter =
+// A function that returns a filter. Set customOptions to manually set filtered values and corresponding texts.
+const getSelectionFilter =
   (
     customOptions?: {
       value: any;
@@ -29,7 +29,7 @@ const generateSelectColumnFilter =
 
     return (
       <select
-        className="selectColumnFilterSelect"
+        className="kt-selection-filter"
         name={id}
         id={id}
         value={selectedOptionId}
@@ -53,4 +53,4 @@ const generateSelectColumnFilter =
     );
   };
 
-export default generateSelectColumnFilter;
+export default getSelectionFilter;
