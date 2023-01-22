@@ -3,7 +3,7 @@ import { formatDateTime } from "../utils";
 import DateBetweenFilter from "./filters/DateBetweenFilter";
 import TextFilter from "./filters/TextFilter";
 import getSelectionFilter from "./filters/getSelectionFilter";
-import { Fragment, useState, useEffect, useCallback } from "react";
+import { Fragment, useState, useEffect, useCallback, useMemo } from "react";
 import { Column, useTable, useFilters, useSortBy } from "react-table";
 import Arrow from "./Arrow";
 
@@ -76,7 +76,15 @@ type Props = {
   assignments: Assignment[];
 };
 
-const AssignmentsTable = ({ assignments }: Props) => {
+const AssignmentsTable = ({ assignments: allAssignments }: Props) => {
+  const [hiddenAssignmentIds, setHiddenAssignmentIds] = useState<number[]>([]);
+
+  const assignments = useMemo(
+    () =>
+      allAssignments.filter((asgmt) => !hiddenAssignmentIds.includes(asgmt.id)),
+    [allAssignments, hiddenAssignmentIds]
+  );
+
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable<Assignment>(
       {
@@ -114,8 +122,6 @@ const AssignmentsTable = ({ assignments }: Props) => {
       useFilters,
       useSortBy
     );
-
-  const [hiddenAssignmentIds, setHiddenAssignmentIds] = useState<number[]>([]);
 
   useEffect(() => {
     const savedData = localStorage.getItem("hiddenAssignmentIds");
@@ -179,7 +185,6 @@ const AssignmentsTable = ({ assignments }: Props) => {
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
-        {/* TODO: showing message below doesn't consider hidden assignments */}
         {rows.length == 0 && (
           <tr className="kt-no-data">
             <td colSpan={headerGroups[0].headers.length}>
@@ -188,36 +193,34 @@ const AssignmentsTable = ({ assignments }: Props) => {
           </tr>
         )}
 
-        {rows
-          .filter((row) => !hiddenAssignmentIds.includes(row.original.id))
-          .map((row, i) => {
-            prepareRow(row);
+        {rows.map((row, i) => {
+          prepareRow(row);
 
-            const deadlineDelta =
-              row.original.dueAt.getTime() - new Date().getTime();
-            const isHighlighted =
-              deadlineDelta > 0 && deadlineDelta < 1 * 24 * 60 * 60 * 1000;
+          const deadlineDelta =
+            row.original.dueAt.getTime() - new Date().getTime();
+          const isHighlighted =
+            deadlineDelta > 0 && deadlineDelta < 1 * 24 * 60 * 60 * 1000;
 
-            return (
-              <tr
-                {...row.getRowProps()}
-                key={i}
-                className={isHighlighted ? "kt-highlighted" : undefined}
-              >
-                {row.cells.map((cell, j) => (
-                  <td
-                    {...cell.getCellProps()}
-                    onClick={() => {
-                      handleCellClick(cell.column.id, row.original);
-                    }}
-                    key={j}
-                  >
-                    {cell.render("Cell")}
-                  </td>
-                ))}
-              </tr>
-            );
-          })}
+          return (
+            <tr
+              {...row.getRowProps()}
+              key={i}
+              className={isHighlighted ? "kt-highlighted" : undefined}
+            >
+              {row.cells.map((cell, j) => (
+                <td
+                  {...cell.getCellProps()}
+                  onClick={() => {
+                    handleCellClick(cell.column.id, row.original);
+                  }}
+                  key={j}
+                >
+                  {cell.render("Cell")}
+                </td>
+              ))}
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );
