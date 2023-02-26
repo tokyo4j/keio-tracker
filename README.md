@@ -9,7 +9,7 @@ This extension allows you to view all available assignments on K-LMS, a learning
 - You can hide assignments by clicking ✕ button and reset by ⟳ button.
   This operation is persistent.
 
-![](./screenshot.png)
+![](./docs/screenshot.png)
 
 ### Installation
 
@@ -21,4 +21,4 @@ This extension allows you to view all available assignments on K-LMS, a learning
 
 4. Drag and drop the zip file onto the page.
 
-![](./installation.webp)
+![](./docs/installation.webp)

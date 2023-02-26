@@ -38,7 +38,7 @@ export type Assignment = {
   courseId: number;
   courseName: string;
   name: string;
-  dueAt: Date;
+  dueAt: number;
   isLocked: boolean;
   isSubmitted: boolean;
 };

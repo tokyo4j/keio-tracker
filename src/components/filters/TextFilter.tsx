@@ -1,16 +1,14 @@
-import { Assignment } from "assignment";
-import { FilterProps, Renderer } from "react-table";
+import { FilterComponentProps } from "@tanstack/react-table";
 
-const TextFilter: Renderer<FilterProps<Assignment>> = ({
-  column: { setFilter },
-}) => {
+interface Props extends FilterComponentProps {}
+
+const TextFilter = ({ column, table }: Props) => {
   return (
     <input
-      className="kt-text-filter"
+      className="p-1 h-8 w-full rounded"
       placeholder="検索"
-      onChange={(e) => setFilter(e.target.value || "")}
-    />
+      onChange={(e) => column.setFilterValue(e.target.value)}
+    ></input>
   );
 };
-
 export default TextFilter;

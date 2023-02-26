@@ -1,10 +1,11 @@
+import { NULL_DATE } from ".";
 import {
   AssignmentsCanvasResponse,
   Assignment,
   CoursesResponse,
 } from "../types/assignment";
 
-const queryCourseIds = `
+const queryForCourseIds = `
 {
   allCourses{
     _id
@@ -15,7 +16,7 @@ const queryCourseIds = `
 }
 `;
 
-const generateQueryForAssignments = (courseIds: number[]) => `
+const createQueryForAssignments = (courseIds: number[]) => `
 fragment f on Course{
   _id
   courseCode
@@ -43,15 +44,17 @@ fragment f on Course{
 const getCsrfToken = () =>
   decodeURIComponent(document.cookie.match(/(^| )_csrf_token=([^;]+)/)![2]);
 
+const getHttpHeaders = () => ({
+  "content-type": "application/json",
+  "x-requested-with": "XMLHttpRequest",
+  "x-csrf-token": getCsrfToken(),
+});
+
 const fetchAssignments = async () => {
   const availableCourseIds = await fetch("api/graphql", {
     method: "POST",
-    headers: {
-      "content-type": "application/json",
-      "x-requested-with": "XMLHttpRequest",
-      "x-csrf-token": getCsrfToken(),
-    },
-    body: JSON.stringify({ query: queryCourseIds }),
+    headers: getHttpHeaders(),
+    body: JSON.stringify({ query: queryForCourseIds }),
   })
     .then((res) => res.json())
     .then((res: CoursesResponse) => {
@@ -65,35 +68,26 @@ const fetchAssignments = async () => {
 
   return await fetch("api/graphql", {
     method: "POST",
-    headers: {
-      "content-type": "application/json",
-      "x-requested-with": "XMLHttpRequest",
-      "x-csrf-token": getCsrfToken(),
-    },
+    headers: getHttpHeaders(),
     body: JSON.stringify({
-      query: generateQueryForAssignments(availableCourseIds),
+      query: createQueryForAssignments(availableCourseIds),
     }),
   })
     .then((res) => res.json())
     .then((res: AssignmentsCanvasResponse): Assignment[] =>
       Object.values(res.data)
         .map((course) => {
-          const trimmedCourseCodeMatches = course.courseCode.match(
-            /(?<=　| )[^ \[　]*?(?= \[|$)/
-          );
-          const courseName = trimmedCourseCodeMatches
-            ? trimmedCourseCodeMatches[0]
-            : course.courseCode;
-          const courseId = Number(course._id);
-
           return course.assignmentsConnection.nodes.map((assignment) => ({
             id: Number(assignment._id),
-            courseId: courseId,
-            courseName: courseName,
+            courseId: Number(course._id),
+            // display shortended course names if possible
+            courseName:
+              course.courseCode.match(/(?<=　| )[^ \[　]*?(?= \[|$)/)?.[0] ||
+              course.courseCode,
             name: assignment.name,
             dueAt: assignment.dueAt
-              ? new Date(assignment.dueAt)
-              : new Date("2100"),
+              ? new Date(assignment.dueAt).getTime()
+              : NULL_DATE,
             isLocked: assignment.lockInfo.isLocked,
             isSubmitted: Boolean(assignment.submissionsConnection.nodes[0]),
           }));
@@ -101,5 +95,4 @@ const fetchAssignments = async () => {
         .flat()
     );
 };
-
 export default fetchAssignments;

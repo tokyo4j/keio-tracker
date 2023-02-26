@@ -6,9 +6,9 @@ const App = () => {
 
   return (
     <>
-      <div className="medium ic-Dashboard-header__layout">
-        <h1 className="ic-Dashboard-header__title">
-          <span>課題一覧 (赤い課題は24時間以内に提出)</span>
+      <div>
+        <h1 className="text-2xl border-gray-300 border-b my-1">
+          課題一覧 (赤い課題は24時間以内に提出)
         </h1>
       </div>
       {error ? (

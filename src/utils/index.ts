@@ -27,3 +27,13 @@ export const formatDateTime = (d: Date) => {
 
   return text;
 };
+
+const now = new Date().getTime();
+
+// if null, returns false
+export const isDateWithinDay = (date: number) => {
+  const delta = date - now;
+  return delta > 0 && delta < 1 * 24 * 60 * 60 * 1000;
+};
+
+export const NULL_DATE = 32503680000000;

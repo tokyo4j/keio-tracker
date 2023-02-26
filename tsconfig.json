@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
+    "target": "ESNext",
+    "module": "ESNext",
     "jsx": "react-jsx",
-    "outDir": "dist",
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "downlevelIteration": true,
-    "baseUrl": "src/types",
+    "noUnusedLocals": true,
+    "types": ["vite/client"],
+    "typeRoots": ["./node_modules/@types"]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }
