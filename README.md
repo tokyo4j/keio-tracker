@@ -13,7 +13,7 @@ This extension allows you to view all available assignments on K-LMS, a learning
 
 ### Installation
 
-1. Download [keio-tracker.zip](https://github.com/tong-poo/keio-tracker/releases/download/v0.1/keio-tracker.zip).
+1. Download [keio-tracker.zip](https://github.com/tokyo4j/keio-tracker/releases/download/v0.2/keio-tracker.zip).
 
 2. Open chrome://extensions for Chrome or edge://extensions for Edge.
 
