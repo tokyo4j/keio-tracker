@@ -14,7 +14,10 @@ const DateFilter = ({ column, table }: Props) => {
       <DatePicker
         locale="ja"
         className="h-8 px-1 cursor-default rounded w-48"
-        clearButtonClassName="after:!bg-gray-600"
+        // Tailwind overwrites "content" property of tags with pseudo-class "after" with empty string,
+        // so we'll further overwrite it with "×".
+        clearButtonClassName="after:!bg-gray-600 after:hover:!bg-red-500 after:hover:content-['×']"
+        clearButtonTitle="クリア"
         dateFormat="MM-dd (ccc)"
         isClearable={true}
         selectsRange={true}
