@@ -5,7 +5,9 @@
   "description": "",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node overwrite_manifest_json.js"
+    "build": "vite build",
+    "chrome": "vite build && node chrome.js && cd dist && zip ../keio-tracker-chrome.zip -r *",
+    "firefox": "vite build && node firefox.js && cd dist && zip ../keio-tracker-firefox.zip -r *"
   },
   "keywords": [],
   "author": "",
